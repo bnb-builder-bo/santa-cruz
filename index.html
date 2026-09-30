@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BNB Builder Session · Santa Cruz</title>
+  <style>
+    :root {
+      --yellow: #f0b90b;
+      --ink: #0b0e11;
+      --white: #ffffff;
+      --muted: #5c6570;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: #000;
+      color: var(--ink);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      overflow: hidden;
+    }
+    .stage {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    .slide {
+      display: none;
+      width: min(100vw, calc(100vh * 16 / 9));
+      height: min(100vh, calc(100vw * 9 / 16));
+      position: relative;
+      padding: 4.2% 4.6% 8%;
+      overflow: hidden;
+    }
+    .slide.on { display: flex; flex-direction: column; }
+    .slide.light { background: var(--white); color: var(--ink); }
+    .slide.dark { background: var(--ink); color: var(--white); }
+    .logo { height: 28px; width: auto; }
+    h1 {
+      font-size: clamp(36px, 4.4vw, 72px);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      font-weight: 750;
+    }
+    h2 {
+      font-size: clamp(26px, 2.6vw, 42px);
+      letter-spacing: -0.03em;
+      font-weight: 750;
+      line-height: 1.05;
+    }
+    .sub { margin-top: 0.6vh; font-size: clamp(15px, 1.25vw, 20px); }
+    .kicker {
+      color: var(--yellow);
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      font-size: clamp(12px, 1vw, 16px);
+      margin-bottom: 1.2vh;
+    }
+    .stack { display: flex; flex-direction: column; gap: 1.2vh; margin-top: 2vh; flex: 1; }
+    .row, .grid { display: grid; gap: 1.1vw; }
+    .g2 { grid-template-columns: 1fr 1fr; }
+    .g3 { grid-template-columns: 1fr 1fr 1fr; }
+    .g4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    .g5 { grid-template-columns: repeat(5, 1fr); }
+    .card {
+      background: var(--ink);
+      color: var(--white);
+      border-radius: 14px;
+      padding: 1.4vh 1.1vw;
+    }
+    .card h3 { color: var(--yellow); font-size: clamp(16px, 1.35vw, 24px); margin-bottom: 0.4vh; }
+    .card p, .card li { font-size: clamp(13px, 1.05vw, 18px); line-height: 1.35; }
+    .card strong { color: var(--yellow); }
+    .quiet { color: rgba(255,255,255,0.82); }
+    .gold { color: var(--yellow); }
+    code, .mono {
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: 0.92em;
+    }
+    pre {
+      background: var(--ink);
+      color: var(--white);
+      border-radius: 12px;
+      padding: 1.2vh 1vw;
+      font-family: "Cascadia Mono", Consolas, monospace;
+      font-size: clamp(12px, 1.05vw, 17px);
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 28% 1fr;
+      gap: 2vw;
+      flex: 1;
+      min-height: 0;
+    }
+    .step.flip { grid-template-columns: 1fr 28%; }
+    .step.flip .panel { order: 2; }
+    .panel {
+      background: var(--ink);
+      color: var(--white);
+      border-radius: 18px;
+      padding: 3vh 1.4vw;
+    }
+    .panel .num {
+      color: var(--yellow);
+      font-size: clamp(64px, 7vw, 110px);
+      font-weight: 750;
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+    }
+    .panel h2 { color: var(--white); margin-top: 1vh; }
+    .beats { display: flex; flex-direction: column; gap: 0.8vh; margin-top: 2vh; }
+    .beat {
+      display: grid;
+      grid-template-columns: auto 11vw 1fr;
+      gap: 1vw;
+      align-items: center;
+      background: var(--ink);
+      color: var(--white);
+      border-radius: 12px;
+      padding: 0.9vh 1vw;
+    }
+    .badge {
+      width: 1.7vw;
+      min-width: 26px;
+      height: 1.7vw;
+      min-height: 26px;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--ink);
+      font-weight: 750;
+      display: grid;
+      place-items: center;
+      font-size: clamp(13px, 1vw, 16px);
+    }
+    .cover-box {
+      margin-top: auto;
+      background: #16181c;
+      border-radius: 16px;
+      padding: 2vh 1.6vw;
+      max-width: 42vw;
+      font-size: clamp(16px, 1.35vw, 22px);
+      line-height: 1.4;
+    }
+    .qr-row { display: flex; gap: 1.2vw; }
+    .qr {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 0.4vh;
+      width: min(18vh, 9vw);
+    }
+    .qr img { width: 100%; height: auto; display: block; }
+    .qr figcaption { color: var(--white); text-align: center; font-size: clamp(11px, 0.85vw, 14px); margin-top: 0.4vh; }
+    .foot {
+      position: absolute;
+      left: 4.6%;
+      right: 4.6%;
+      bottom: 3.2%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .count { font-variant-numeric: tabular-nums; font-size: 14px; opacity: 0.55; }
+    #notes {
+      display: none;
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      background: #111;
+      color: #eee;
+      padding: 12px 20px 16px;
+      font-size: 15px;
+      line-height: 1.35;
+      z-index: 5;
+      max-height: 22vh;
+      overflow: auto;
+    }
+    body.notes-on #notes { display: block; }
+    #help {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      color: white;
+      z-index: 6;
+      place-items: center;
+    }
+    body.help-on #help { display: grid; }
+    #help div { font-size: 22px; line-height: 1.7; }
+    a { color: var(--yellow); }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage"></div>
+  <aside id="notes"></aside>
+  <div id="help"><div>
+    Flechas o espacio: avanzar<br />
+    F: pantalla completa<br />
+    S: notas<br />
+    H: esta ayuda
+  </div></div>
+  <script>
+    const slides = [
+      {
+        notes: "Esto ya es el evento. No anuncies Luma. Las tres láminas siguientes son solo el problema. No nombres Agent Studio todavía.",
+        html: `<section class="slide dark">
+          <p class="kicker">BUILDER SESSION</p>
+          <h1>Hoy armamos<br />el agente.</h1>
+          <div class="cover-box">Santa Cruz · sábado 3 de octubre · 11:30 a 15:00<br />UNICEN · Agent Studio</div>
+          <div class="foot"><img class="logo" src="assets/lockup-yellow.png" alt="BNB Chain" /><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Parate en el paso 4. Una API key llega hasta el plan y a veces la reserva. Preguntá qué hace falta para pagar el hotel. La respuesta es la tarjeta de alguien. Todavía no ofrezcas la salida.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:2vh">El plan está. El pago, no.</h2>
+          <p class="sub">Un asistente de hoy llega bien hasta esta puerta.</p>
+          <div class="beats">
+            <div class="beat"><span class="badge">1</span><strong class="gold">El pedido</strong><span>Un viaje a Brasil.</span></div>
+            <div class="beat"><span class="badge">2</span><strong class="gold">El asistente</strong><span>Arma la ruta. Puede dejar la reserva.</span></div>
+            <div class="beat"><span class="badge">3</span><strong class="gold">La puerta</strong><span>Hay que pagar el hotel.</span></div>
+            <div class="beat"><span class="badge">4</span><strong class="gold">Quién paga</strong><span>Alguien de la sala, con su tarjeta.</span></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Salí del viaje y entrá al negocio de la sala. El asistente escribe algo útil y el cliente igual le paga a una persona. Seguís en el problema.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:2vh">Si el trabajo sirve, igual salís vos.</h2>
+          <p class="sub">El asistente espera. El mostrador lo atiende una persona.</p>
+          <div class="stack">
+            <div class="card"><h3>Cotiza</h3><p>Un flete, un presupuesto, un informe.</p></div>
+            <div class="card"><h3>Espera</h3><p>El siguiente mensaje, en el chat o en el WhatsApp.</p></div>
+            <div class="card"><h3>Cobra</h3><p>La persona. El cliente no le paga al asistente.</p></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Tercera traba, sin solución todavía. El asistente te conoce y vive en la plataforma de otro. De afuera no hay a quién contratar. Pausá. La lámina que sigue nombra Agent Studio.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:2vh">Ese asistente vive en otra casa.</h2>
+          <p class="sub">El hilo es de ustedes. El producto, no.</p>
+          <div class="card" style="margin-top:3vh;flex:1;display:flex;flex-direction:column;justify-content:center">
+            <h3 style="font-size:clamp(22px,2vw,32px)">Gemini. Claude. ChatGPT.</h3>
+            <p style="font-size:clamp(20px,1.8vw,30px);margin-top:2vh;line-height:1.35">Te conocen.<br />La conversación queda en su plataforma.<br />De afuera no hay a quién contratar<br />ni a quién pagarle.</p>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Recién acá hay solución. Wallet es la caja. Identidad es a quién encuentran. Pagos es el mostrador. Nube y modelo cierran. Un minuto, sin historia de versiones.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1.4vh">De ahí sale Agent Studio.</h2>
+          <p class="sub">Wallet, identidad, pagos, nube y modelo. El trabajo lo ponen ustedes.</p>
+          <div class="grid g5" style="margin-top:1.6vh">
+            <div class="card"><h3>1 · Wallet</h3><p>La del agente. Con límites.</p></div>
+            <div class="card"><h3>2 · Identidad</h3><p>Queda registrada en BSC.</p></div>
+            <div class="card"><h3>3 · Pagos</h3><p>Cobra un trabajo, o sale gratis.</p></div>
+            <div class="card"><h3>4 · Nube</h3><p>Corre fuera de la laptop.</p></div>
+            <div class="card"><h3>5 · Modelo</h3><p>Se recarga solo si hay saldo.</p></div>
+          </div>
+          <div class="grid g3" style="margin-top:1.2vh">
+            <div class="card"><h3>Lo encuentran</h3><p class="mono">ERC-8004</p></div>
+            <div class="card"><h3>Lo contratan</h3><p class="mono">ERC-8183</p></div>
+            <div class="card"><h3>Le pagan</h3><p class="mono">x402</p></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Veinte segundos. v1 un prompt. v2 ya cobra. v3 más wallets. v4 esta, 22 de septiembre. El oficio tiene que poder encontrarse, cobrarse y pagar a otro. El camino de la sala es el trial de 48 horas en testnet.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1.4vh">Trabajamos con la v4.</h2>
+          <p class="sub">Salió el 22 de septiembre.</p>
+          <div class="grid g4" style="margin-top:1.6vh">
+            <div class="card"><h3>v1 · 1 jul</h3><p>Un prompt</p></div>
+            <div class="card"><h3>v2 · 13 ago</h3><p>Ya cobra</p></div>
+            <div class="card"><h3>v3 · 3 sep</h3><p>Más wallets</p></div>
+            <div class="card"><h3>v4 · 22 sep</h3><p>Esta</p></div>
+          </div>
+          <div class="grid g3" style="margin-top:1.2vh;flex:1">
+            <div class="card"><h3>Oficio</h3><p>Uno que cobre, se deje encontrar y pueda pagar a otro.</p></div>
+            <div class="card"><h3>Máquina</h3><p>Lo ven responder antes de subir nada.</p></div>
+            <div class="card"><h3>Trial</h3><p>URL de prueba. 48 horas. Solo testnet.</p></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "No avances mientras falte alguien. Editor gratis: Cursor, Claude Code, OpenCode, Codex o Antigravity. Node 22 o más. Wallet en BSC Testnet. GitHub para el trial. Bun 1.3 o más recién al desplegar.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1.2vh">Esto tiene que estar listo.</h2>
+          <p class="sub">Nos quedamos acá hasta que toda la sala lo tenga.</p>
+          <div class="card" style="margin-top:1.4vh">
+            <h3>Editor</h3>
+            <p>Cursor, Claude, OpenCode, Codex o Antigravity. El plan gratis alcanza.</p>
+          </div>
+          <div class="grid g4" style="margin-top:1.2vh">
+            <div class="card"><h3>Node.js</h3><p>Corre bag.<br /><strong>node -v · 22 o más</strong></p></div>
+            <div class="card"><h3>Wallet</h3><p>MetaMask o Trust. Recibe tBNB y $U.<br /><strong>BSC Testnet</strong></p></div>
+            <div class="card"><h3>GitHub</h3><p>Entra al trial.<br /><strong>Una cuenta</strong></p></div>
+            <div class="card"><h3>Bun</h3><p>Despliega el agente.<br /><strong>1.3 o más</strong></p></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Chain ID 97. Contrato de $U de testnet, 18 decimales. Vos les pasás tBNB y $U cuando muestren la address. El bot de Telegram y el faucet quedan de respaldo. El $U de mainnet no sirve acá.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1.2vh">Testnet, tBNB y $U.</h2>
+          <div class="grid g2" style="margin-top:1.6vh;flex:1">
+            <div class="card">
+              <p><strong>Red</strong><br /><span class="mono">BSC Testnet</span></p>
+              <p style="margin-top:1vh"><strong>RPC</strong><br /><span class="mono">bsc-testnet-dataseed.bnbchain.org</span></p>
+              <p style="margin-top:1vh"><strong>Chain ID</strong><br /><span class="mono">97</span></p>
+              <p style="margin-top:1vh"><strong>Símbolo</strong><br /><span class="mono">tBNB</span></p>
+              <p style="margin-top:1vh"><strong>Explorer</strong><br /><span class="mono">testnet.bscscan.com</span></p>
+              <p style="margin-top:1vh"><strong>$U · 18 decimales</strong><br /><span class="mono">0xc70B8741B8B07A6d61E54fd4B20f22Fa648E5565</span></p>
+            </div>
+            <div>
+              <div class="card"><h3>Yo se los paso.</h3><p>Muestren la address en esta red. tBNB es el gas. $U es el saldo con el que opera el agente.</p></div>
+              <div class="qr-row" style="margin-top:1.2vh">
+                <figure class="qr" style="background:#0b0e11"><img src="assets/qr-tbnb.png" alt="QR tBNB" /><figcaption>tBNB · Telegram</figcaption></figure>
+                <figure class="qr" style="background:#0b0e11"><img src="assets/qr-u.png" alt="QR U" /><figcaption>$U · faucet</figcaption></figure>
+              </div>
+            </div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Dos addresses distintas. La personal recibe para poder fondear. La del agente es nueva y desechable: al desplegar, la clave de prueba sale de la laptop. Nadie usa una wallet con fondos reales.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1.6vh">Dos wallets. Las dos en testnet.</h2>
+          <div class="grid g2" style="margin-top:2vh;flex:1">
+            <div class="card"><h3>La suya</h3><p>MetaMask, Trust Wallet u otra.<br />La configuran en BSC Testnet.<br />Ahí reciben tBNB y $U.</p></div>
+            <div class="card"><h3>La del agente</h3><p>La crea el proyecto.<br />Es nueva y desechable.<br />Ahí tienen que terminar los dos saldos.</p></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Señalá el orden y pasá a la terminal. Si alguien se traba, se resuelve sobre el paso en el que está la sala.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1.4vh">De acá hasta verlo responder.</h2>
+          <div class="grid g3" style="margin-top:2vh">
+            <div class="card"><h3>1 · Instalar</h3><p>Que bag responda.</p></div>
+            <div class="card"><h3>2 · Crear</h3><p>Proyecto y wallet del agente.</p></div>
+            <div class="card"><h3>3 · Fondos</h3><p>tBNB y $U en esa wallet.</p></div>
+            <div class="card"><h3>4 · Trabajo</h3><p>Lo editan en su agente.</p></div>
+            <div class="card"><h3>5 · Local</h3><p>Responde en su máquina.</p></div>
+            <div class="card"><h3>6 · Trial</h3><p>URL en testnet, 48 horas.</p></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Hacelo primero en el proyector. El paquete es @bnbagent/studio-cli. bag skills install detecta Cursor y Claude Code. Si pregunta alcance, usuario.",
+        html: `<section class="slide light">
+          <div class="step">
+            <div class="panel"><img class="logo" src="assets/lockup-yellow.png" alt="" /><p class="kicker" style="margin-top:4vh">PASO</p><div class="num">1</div><h2>Instalar</h2></div>
+            <div>
+              <p class="sub">Meta: bag --version imprime un número.</p>
+              <pre style="margin-top:1.4vh">node -v
+npm install -g @bnbagent/studio-cli
+bag skills install
+bag --version</pre>
+              <p class="sub" style="margin-top:1.4vh">bag skills install le enseña al editor a manejar esta versión. Si node -v queda por debajo de 22, primero Node.</p>
+            </div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Nombre: letra primero, solo letras y números, máximo 23. La contraseña se escribe en su terminal y no se proyecta. La wallet es nueva. Al desplegar, esa clave de prueba sale de la laptop.",
+        html: `<section class="slide light">
+          <div class="step flip">
+            <div class="panel"><img class="logo" src="assets/lockup-yellow.png" alt="" /><p class="kicker" style="margin-top:4vh">PASO</p><div class="num">2</div><h2>Crear el proyecto</h2></div>
+            <div>
+              <p class="sub">Meta: una carpeta nueva y la wallet del agente.</p>
+              <pre style="margin-top:1.4vh">bag init sunombre
+  --network bsc-testnet
+  --llm-provider pieverse-llm
+  --wallet-kind evm-local
+  --storage-provider local
+  --destination platform</pre>
+              <p class="sub" style="margin-top:1.4vh">sunombre: letra primero, solo letras y números, máximo 23. La wallet que aparece es nueva. No es la de MetaMask.</p>
+            </div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "bag wallet show imprime la address del agente. El envío sale de la wallet de ellos. Contrato $U 0xc70B…5565. No proyectes la clave.",
+        html: `<section class="slide light">
+          <div class="step">
+            <div class="panel"><img class="logo" src="assets/lockup-yellow.png" alt="" /><p class="kicker" style="margin-top:4vh">PASO</p><div class="num">3</div><h2>Pasar tBNB y $U</h2></div>
+            <div>
+              <p class="sub">Meta: los dos saldos, en la address del agente.</p>
+              <pre style="margin-top:1.4vh">bag wallet show
+bag wallet balance</pre>
+              <p class="sub" style="margin-top:1.4vh">Copien la address 0x. Desde su wallet de testnet mandan tBNB y $U ahí. $U tiene que estar agregado como token.</p>
+            </div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "El editor hace la edición. Ellos dicen el oficio en una oración: que otro pueda encontrarlo, pagarle y, si falta una pieza, que este pague a otro. La firma no se recorre. Hoy es testnet.",
+        html: `<section class="slide light">
+          <div class="step flip">
+            <div class="panel"><img class="logo" src="assets/lockup-yellow.png" alt="" /><p class="kicker" style="margin-top:4vh">PASO</p><div class="num">4</div><h2>El trabajo</h2></div>
+            <div>
+              <p class="sub">Meta: el agente deja de entregar el texto genérico.</p>
+              <pre style="margin-top:1.2vh">app/agent/src/sellerCore.ts</pre>
+              <div class="stack">
+                <div class="card"><h3>Cobrar</h3><p>Un trabajo con precio. La plata es del agente.</p></div>
+                <div class="card"><h3>Publicar</h3><p>Otro agente lo encuentra y lo contrata.</p></div>
+                <div class="card"><h3>Pagar</h3><p>Si falta una pieza, contrata a otro agente.</p></div>
+              </div>
+              <p class="sub">Abran la carpeta en su editor. El cambio vive en runWork.</p>
+            </div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Corré bag dev y leé la URL. A2A escucha en el puerto 9000. La agent card confirma que el proceso está vivo.",
+        html: `<section class="slide light">
+          <div class="step">
+            <div class="panel"><img class="logo" src="assets/lockup-yellow.png" alt="" /><p class="kicker" style="margin-top:4vh">PASO</p><div class="num">5</div><h2>Verlo en su máquina</h2></div>
+            <div>
+              <p class="sub">Meta: el agente responde delante de ustedes.</p>
+              <pre style="margin-top:1.4vh">bag dev
+curl http://localhost:9000/.well-known/agent-card.json</pre>
+              <p class="sub" style="margin-top:1.4vh">Cuando la terminal imprima la dirección, ábranla. La tarjeta del agente confirma que el proceso está vivo.</p>
+            </div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Bun 1.3 o más. Login imprime URL y código. El reloj de 48 horas arranca en el primer deploy exitoso, una ventana por cuenta de GitHub. Redeploy no la reinicia. Wallet desechable. No corras destroy. Si el trial está vencido, no abras AWS en la sala.",
+        html: `<section class="slide light">
+          <div class="step flip">
+            <div class="panel"><img class="logo" src="assets/lockup-yellow.png" alt="" /><p class="kicker" style="margin-top:4vh">PASO</p><div class="num">6</div><h2>Desplegar el trial</h2></div>
+            <div>
+              <p class="sub">Meta: una URL de prueba en testnet. Dura 48 horas.</p>
+              <pre style="margin-top:1.2vh">bun --version
+bag platform login
+bag platform credit
+bag deploy --provider bnb
+bag deploy verify --provider bnb</pre>
+              <p class="sub" style="margin-top:1vh">El login da un código. Ellos lo completan en el browser. La identidad onchain entra en verify.</p>
+            </div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Usala cuando alguien muestre un error, no como pausa. Si se acaba el tiempo, el mínimo es proyecto, wallet de prueba, fondos, trabajo propio y una respuesta en local.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1.2vh">Si la terminal dice otra cosa.</h2>
+          <div class="grid g2" style="margin-top:1.4vh">
+            <div class="card"><h3>node -v bajo de 22</h3><p>Instalan Node y vuelven a abrir la terminal.</p></div>
+            <div class="card"><h3>bag no se reconoce</h3><p>Cierran la terminal, la abren de nuevo, y repiten bag --version.</p></div>
+            <div class="card"><h3>Chain ID distinto de 97</h3><p>La red es BSC Testnet.</p></div>
+            <div class="card"><h3>$U no aparece</h3><p>Agregan el contrato. El saldo puede haber llegado igual.</p></div>
+            <div class="card"><h3>El agente sigue en cero</h3><p>Los fondos están en MetaMask, no en la address de bag wallet show.</p></div>
+            <div class="card"><h3>El deploy no arranca</h3><p>Falta Bun, o el código de GitHub no se completó.</p></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Cierra el domingo 11 de octubre de 2026, 08:00 Bolivia. Pozo 20.000 USD. Especial de Agent Studio: 2.000. Hay que usar bStocks, Ondo o xStocks, solo spot, entrega en BSC. Lo de hoy es el piso.",
+        html: `<section class="slide dark">
+          <img class="logo" src="assets/lockup-yellow.png" alt="BNB Chain" />
+          <p class="kicker" style="margin-top:1.4vh">DESPUÉS DE ESTA SALA</p>
+          <h2>BNB Hack: Tokenized Stocks</h2>
+          <div class="grid g3" style="margin-top:1.6vh">
+            <div class="card" style="background:#16181c"><h3>11 oct</h3><p>Cierra el domingo a las 08:00, hora de Bolivia.</p></div>
+            <div class="card" style="background:#16181c"><h3>USD 20.000</h3><p>Pozo con Binance Web3 Wallet.</p></div>
+            <div class="card" style="background:#16181c"><h3>USD 2.000</h3><p>Mejor uso de Agent Studio.</p></div>
+          </div>
+          <div class="grid" style="grid-template-columns: 1fr auto; margin-top:1.2vh; align-items:center">
+            <div class="card" style="background:#16181c">
+              <p>La entrega tiene que usar bStocks, Ondo o xStocks. Solo spot, en BSC.</p>
+              <p style="margin-top:1vh"><a href="https://www.bnbchain.org/en/hackathons/tokenized-stocks">bnbchain.org/en/hackathons/tokenized-stocks</a></p>
+              <p style="margin-top:1vh">Lo de hoy es el piso. La entrega es el 11.</p>
+            </div>
+            <figure class="qr"><img src="assets/qr-hack.png" alt="QR hackathon" /><figcaption style="color:#fff">Página</figcaption></figure>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Polera por asistir. Gorra por un post, no story. X: @TomoKi977, etiquetan @BNBCHAIN y @BNBChainLatAm. Instagram: @rasec56, etiquetan @bnbchain y @bnbchaines. Bag si se inscriben ahora. No digas las cantidades.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1vh">El swag se lleva así.</h2>
+          <p class="sub">Hay pocas unidades. Una story no cuenta.</p>
+          <div class="grid g3" style="margin-top:1.2vh">
+            <div class="card"><h3>Polera</h3><p>Por venir. Hoy, en la sala.</p></div>
+            <div class="card"><h3>Gorra</h3><p>Por un post. Como estos. Mostralo.</p></div>
+            <div class="card"><h3>Bag</h3><p>Por inscribirte. Trae stickers. Hay pocas.</p></div>
+          </div>
+          <div class="grid" style="grid-template-columns: 1fr 1fr auto; margin-top:1vh">
+            <div class="card"><h3>X</h3><p>@TomoKi977<br />Armando un agente en Santa Cruz, con Agent Studio.<br /><strong>#BuilderSessionSantaCruz</strong><br />@BNBCHAIN @BNBChainLatAm<br />Post. No story.</p></div>
+            <div class="card"><h3>Instagram</h3><p>@rasec56<br />Foto de hoy. De la sala.<br /><strong>#BuilderSessionSantaCruz</strong><br />@bnbchain @bnbchaines<br />Post. No story.</p></div>
+            <figure class="qr" style="background:#0b0e11"><img src="assets/qr-hack-reg.png" alt="QR inscripción" /><figcaption>Bag · inscribite</figcaption></figure>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Dejá que escaneen. linktr.ee/bnbchain, WhatsApp en español, linktr.ee/tomoki977.",
+        html: `<section class="slide light">
+          <img class="logo" src="assets/lockup-ink.png" alt="BNB Chain" />
+          <h2 style="margin-top:1.4vh">Para escribir después.</h2>
+          <div class="grid g3" style="margin-top:2vh">
+            <div class="card" style="text-align:center"><img src="assets/qr-bnb.png" alt="QR BNB Chain" style="width:42%;margin:0 auto;background:#fff;border-radius:8px" /><h3 style="margin-top:1vh">BNB Chain</h3><p>linktr.ee/bnbchain</p></div>
+            <div class="card" style="text-align:center"><img src="assets/qr-es.png" alt="QR WhatsApp" style="width:42%;margin:0 auto;background:#fff;border-radius:8px" /><h3 style="margin-top:1vh">En español</h3><p>WhatsApp</p></div>
+            <div class="card" style="text-align:center"><img src="assets/qr-julio.png" alt="QR Julio" style="width:42%;margin:0 auto;background:#fff;border-radius:8px" /><h3 style="margin-top:1vh">Julio</h3><p>linktr.ee/tomoki977</p></div>
+          </div>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      },
+      {
+        notes: "Dejá esta lámina y respondé lo que quede. Si preguntan por la hackathon, volvé una lámina. Agradecé a Gerson y a la carrera en voz.",
+        html: `<section class="slide dark">
+          <img class="logo" src="assets/lockup-yellow.png" alt="BNB Chain" />
+          <h1 style="margin-top:8vh">Gracias.</h1>
+          <p class="sub" style="margin-top:2vh;font-size:clamp(18px,1.6vw,26px)">Julio Cesar Severiche Orellana<br />DevRel Ambassador · BNB Chain</p>
+          <div class="foot"><span></span><span class="count"></span></div>
+        </section>`
+      }
+    ];
+
+    const stage = document.getElementById("stage");
+    const notesEl = document.getElementById("notes");
+    slides.forEach((s) => {
+      const wrap = document.createElement("div");
+      wrap.innerHTML = s.html.trim();
+      stage.appendChild(wrap.firstElementChild);
+    });
+    let i = 0;
+    const nodes = [...stage.querySelectorAll(".slide")];
+    function show(n) {
+      i = Math.max(0, Math.min(nodes.length - 1, n));
+      nodes.forEach((el, idx) => {
+        el.classList.toggle("on", idx === i);
+        const num = el.querySelector(".count");
+        if (num) num.textContent = String(idx + 1).padStart(2, "0") + " / " + String(nodes.length).padStart(2, "0");
+      });
+      notesEl.textContent = slides[i].notes;
+      location.hash = String(i + 1);
+    }
+    function parseHash() {
+      const n = parseInt(location.hash.replace("#", ""), 10);
+      show(Number.isFinite(n) ? n - 1 : 0);
+    }
+    window.addEventListener("hashchange", parseHash);
+    parseHash();
+    document.addEventListener("keydown", (e) => {
+      if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); show(i + 1); }
+      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(i - 1); }
+      else if (e.key === "Home") show(0);
+      else if (e.key === "End") show(nodes.length - 1);
+      else if (e.key === "s" || e.key === "S") document.body.classList.toggle("notes-on");
+      else if (e.key === "f" || e.key === "F") {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      } else if (e.key === "h" || e.key === "H" || e.key === "?") document.body.classList.toggle("help-on");
+      else if (e.key === "Escape") document.body.classList.remove("help-on");
+    });
+  </script>
+</body>
+</html>
