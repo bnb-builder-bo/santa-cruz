@@ -46,13 +46,47 @@ function step(n, title, flip, body) {
 const slides = [
   {
     dark: 1,
-    notes: "Esto ya es el evento. No anuncies Luma. Las tres láminas siguientes son solo el problema. No nombres Agent Studio todavía.",
+    notes: "Esto ya es el evento. No anuncies Luma. Primero te presentás y contás Cochabamba con la foto. Después vienen tres láminas de problema: lo que un agente onchain resuelve (pagar, cobrar, tener identidad propia). No nombres Agent Studio todavía.",
     els: [
       logo("yellow", 0.6, 0.48, 0.52),
-      tx(0.6, 1.55, 12, 0.32, "BUILDER SESSION", { pt: 14, bold: 1, color: GOLD }),
-      tx(0.6, 2.05, 12, 2.15, "Hoy armamos\nel agente.", { pt: 54, bold: 1, color: WHITE }),
-      r(0.55, 5.35, 8.6, 1.55, SOFT),
-      tx(0.85, 5.55, 8.05, 1.15, "Santa Cruz   ·   sábado 3 de octubre   ·   11:30 a 15:00\nUNICEN   ·   Agent Studio", { pt: 18, color: WHITE, mid: 1 }),
+      tx(0.6, 2.05, 12, 2.15, "BNB Builder Session\nSanta Cruz", { pt: 54, bold: 1, color: WHITE }),
+      tx(0.6, 4.45, 12, 0.5, "Conozcan el ecosistema de BNB Chain con la comunidad de Bolivia.", { pt: 22, color: GOLD }),
+    ],
+  },
+  {
+    notes: "Treinta segundos. Presentate: Julio Severiche, DevRel Ambassador de BNB Chain en Bolivia. El QR lleva a tu linktree: X, Instagram, LinkedIn y GitHub. No te extiendas: la sala vino a armar el agente.",
+    els: [
+      logo("ink"),
+      tx(0.55, 1.75, 7.9, 0.9, "Julio Severiche", { pt: 48, bold: 1, color: INK }),
+      tx(0.55, 2.8, 7.9, 0.5, "DevRel Ambassador   ·   BNB Chain Bolivia", { pt: 22, color: INK }),
+    ].concat(
+      [
+        ["assets/x-round.png", "X", "@TomoKi977"],
+        ["assets/instagram-round.png", "Instagram", "@rasec56"],
+      ].flatMap((item, i) => {
+        const x = 0.55 + i * 3.95;
+        return [
+          r(x, 4.35, 3.75, 1.45, INK),
+          im(x + 0.28, 4.8, 0.55, 0.55, item[0]),
+          tx(x + 1.02, 4.58, 2.6, 0.36, item[1], { pt: 14, bold: 1, color: GOLD }),
+          tx(x + 1.02, 4.98, 2.6, 0.5, item[2], { pt: 20, bold: 1, color: WHITE }),
+        ];
+      }),
+      [
+        r(8.75, 1.35, 4.05, 5.55, INK),
+        im(9.27, 1.85, 3.0, 3.0, "assets/qr-julio.png"),
+        tx(9.03, 5.2, 3.49, 0.5, "Julio", { pt: 22, bold: 1, color: GOLD, center: 1 }),
+        tx(9.03, 5.75, 3.49, 0.4, "linktr.ee/tomoki977", { pt: 15, color: WHITE, center: 1 }),
+      ]
+    ),
+  },
+  {
+    dark: 1,
+    notes: "Foto final de Cochabamba, martes 18 de agosto de 2026. Contá la anécdota de ese día con calma: quiénes vinieron, qué armaron, qué salió mal y cómo se resolvió. Cerrá con: hoy le toca a Santa Cruz.",
+    els: [
+      im(0, 0, SW, SH, "assets/cochabamba-final.jpg"),
+      r(0.45, 6.55, 4.6, 0.6, INK, 0.12),
+      tx(0.65, 6.55, 4.3, 0.6, "Cochabamba   ·   18 de agosto de 2026", { pt: 16, bold: 1, color: GOLD, mid: 1 }),
     ],
   },
   {
@@ -111,11 +145,11 @@ const slides = [
     ],
   },
   {
-    notes: "Recién acá hay solución. Wallet es la caja. Identidad es a quién encuentran. Pagos es el mostrador.",
+    notes: "Recién acá hay solución. Este es el valor de un agente onchain: paga, cobra y tiene una identidad que otros encuentran. Wallet es la caja. Identidad es a quién encuentran. Pagos es el mostrador.",
     els: [
       logo("ink"),
       heading("De ahí sale Agent Studio.", 0.88),
-      tx(0.55, 1.52, 12.2, 0.38, "Wallet, identidad, pagos, nube y modelo. El trabajo lo ponen ustedes.", { pt: 18, color: INK }),
+      tx(0.55, 1.52, 12.2, 0.38, "Un agente onchain paga, cobra y tiene identidad propia. El trabajo lo ponen ustedes.", { pt: 18, color: INK }),
     ].concat(
       [
         ["1", "Wallet", "La del agente.\nCon límites."],
@@ -172,7 +206,7 @@ const slides = [
       [
         tx(10.52, 2.18, 2.05, 0.42, "v4", { pt: 20, bold: 1, color: GOLD, mid: 1 }),
         tx(10.05, 2.72, 2.55, 0.3, "22 sep", { pt: 14, color: WHITE }),
-        tx(10.05, 3.05, 2.55, 0.4, "Esta", { pt: 18, bold: 1, color: WHITE }),
+        tx(10.05, 3.05, 2.55, 0.4, "Más monedas", { pt: 16, bold: 1, color: WHITE }),
       ],
       [
         ["Oficio", "Uno que cobre, se deje encontrar y pueda pagar a otro."],
@@ -326,35 +360,35 @@ const slides = [
     ),
   },
   {
-    notes: "Hacelo primero en el proyector. El paquete es @bnbagent/studio-cli. Si skills pregunta alcance, usuario.",
+    notes: "Hacelo primero en el proyector. El paquete es @bnbagent/studio-cli (hoy 0.0.14, Agent Studio v4). Si skills pregunta alcance, usuario. Desde acá el editor maneja todo con /bnbagent-studio: es la única entrada y enruta cada paso. Ellos describen; el editor corre los comandos.",
     els: step(1, "Instalar", false, [
       tx(4.65, 0.95, 8.28, 0.7, "Meta: bag --version imprime un número.", { pt: 18, color: INK }),
     ].concat(codeBox(4.65, 1.77, 8.28, 1.6, "node -v\nnpm install -g @bnbagent/studio-cli\nbag skills install\nbag --version", 15), [
-      tx(4.65, 3.59, 8.28, 3.2, "bag skills install le enseña al editor a manejar esta versión.\nSi node -v queda por debajo de 22, primero Node. No sigan.", { pt: 16, color: INK }),
+      tx(4.65, 3.59, 8.28, 3.2, "En el editor, todo pasa por /bnbagent-studio. Pídanle:\n“Usa /bnbagent-studio: crea un agente vendedor en BSC testnet, destino platform, llamado sunombre.”\nSi node -v queda por debajo de 22, primero Node. No sigan.", { pt: 16, color: INK }),
     ])),
   },
   {
-    notes: "Nombre: letra primero, solo letras y números, máximo 23. La contraseña no se proyecta. La wallet es nueva.",
+    notes: "Nombre: letra primero, solo letras y números, máximo 23. En una terminal humana, bag init genera la contraseña, la guarda en .studio/.env.local, crea la wallet y activa Pieverse en cero. No se proyecta. La wallet es nueva, no la de MetaMask. Si init lo corrió el editor (sin TTY) o con --no-onboard, faltan wallet y llave del modelo: cd app/agent, bag wallet new --generate-password, bag llm activate (gratis, modelo auto/free; sin eso deploy prepare se bloquea por key_hash) y bag doctor. Nadie inventa la contraseña. El .env.local no se pega en el chat; ni claves ni contraseñas en la línea de comandos.",
     els: step(2, "Crear el proyecto", true, [
       tx(0.5, 0.95, 8.22, 0.7, "Meta: una carpeta nueva y la wallet del agente.", { pt: 18, color: INK }),
     ].concat(
       codeBox(0.5, 1.77, 8.22, 2.24, "bag init sunombre\n  --network bsc-testnet\n  --llm-provider pieverse-llm\n  --wallet-kind evm-local\n  --storage-provider local\n  --destination platform", 15),
-      [tx(0.5, 4.23, 8.22, 2.6, "Es un solo comando. sunombre: letra primero, solo letras y números, máximo 23.\nLa contraseña se escribe en su terminal. No se proyecta.\nLa wallet que aparece es nueva. No es la de MetaMask.", { pt: 16, color: INK })]
+      [tx(0.5, 4.23, 8.22, 2.6, "Es un solo comando. sunombre: letra primero, solo letras y números, máximo 23.\nLa contraseña la genera bag y la guarda en .studio/.env.local. Nadie la escribe.\nSi lo corrió el editor y falta la wallet: bag wallet new --generate-password, bag llm activate y bag doctor.", { pt: 16, color: INK })]
     )),
   },
   {
-    notes: "bag wallet show imprime la address del agente. El envío sale de la wallet de ellos. No proyectes la clave.",
+    notes: "bag wallet show imprime la address del agente, no la de MetaMask. No proyectes la clave. init, dev, deploy y verify andan sin saldo (deploy solo avisa; el registro ERC-8004 del trial no paga gas). La plata importa para los jobs pagos ERC-8183. Camino principal: bot de Telegram @bnbchain_official_bot, mensaje “I would like to get tBNB to my wallet <address>” (hasta 0.3 tBNB por día); lo mismo con U. Vos sos el respaldo. Mínimo por persona: 0.01 tBNB y 0.3 U. $U: 0xc70B8741B8B07A6d61E54fd4B20f22Fa648E5565, símbolo U, 18 decimales (el de ERC-8183; no el U de b402 0x3309…cC39). bag wallet fund existe pero hoy quedó en “queued” y falló: no lo enseñes.",
     els: step(3, "Pasar tBNB y $U", false, [
-      tx(4.65, 0.95, 8.28, 0.7, "Meta: los dos saldos, en la address del agente.", { pt: 18, color: INK }),
+      tx(4.65, 0.95, 8.28, 0.7, "Meta: fondos de prueba en la address del agente.", { pt: 18, color: INK }),
     ].concat(codeBox(4.65, 1.77, 8.28, 0.96, "bag wallet show\nbag wallet balance", 15), [
-      tx(4.65, 2.95, 8.28, 3.6, "Copien la address 0x que imprime.\nDesde su wallet de testnet manden tBNB y $U ahí.\nSi me muestran esa address, se los mando directo.\n$U tiene que estar agregado como token. Si no, el saldo llega y no se ve.", { pt: 16, color: INK }),
+      tx(4.65, 2.95, 8.28, 3.6, "Copien la address 0x que imprime. No es la de MetaMask.\nTelegram @bnbchain_official_bot: pidan tBNB y U a esa address.\nMínimo 0.01 tBNB y 0.3 U. Si me la muestran, se los mando.\nPara crear, correr y desplegar no hace falta saldo. Para cobrar jobs, sí.\n$U se agrega como token. Si no, el saldo llega y no se ve.", { pt: 16, color: INK }),
     ])),
   },
   {
-    notes: "El editor hace la edición. El oficio, en una oración: que otro pueda encontrarlo, pagarle y, si falta una pieza, que este pague a otro. La firma no se recorre.",
+    notes: "El editor hace la edición. El oficio, en una oración: que otro pueda encontrarlo, pagarle y, si falta una pieza, que este pague a otro. El trabajo se arma en buildRunWork, dentro de unifiedMain.ts; sellerCore.ts es el núcleo ERC-8183 que lo llama. La firma no se recorre. El modelo gratis filtra su razonamiento y termina en </think>: pídanle al editor que lo saque de la entrega. No agreguen description en [payments.b402_seller.bazaar] de studio.toml: bag dev se cae (“bazaar.info_json must be a JSON object”) y bag doctor no lo ve. Tu demo: Detective de wallets (ya desplegado, ERC-8004 #2552) y el Explicador de transacciones en vivo.",
     els: step(4, "El trabajo", true, [
       tx(0.5, 0.95, 8.22, 0.45, "Meta: el agente deja de entregar el texto genérico.", { pt: 18, color: INK }),
-    ].concat(codeBox(0.5, 1.5, 8.22, 0.72, "app/agent/src/sellerCore.ts", 16), [
+    ].concat(codeBox(0.5, 1.5, 8.22, 0.72, "app/agent/src/unifiedMain.ts → buildRunWork", 16), [
       ["Cobrar", "Un trabajo con precio. La plata es del agente."],
       ["Publicar", "Otro agente lo encuentra y lo contrata."],
       ["Pagar", "Si falta una pieza, contrata a otro agente."],
@@ -366,39 +400,39 @@ const slides = [
         tx(0.72, y + 0.46, 7.78, 0.42, job[1], { pt: 14, color: WHITE }),
       ];
     }), [
-      tx(0.5, 5.95, 8.22, 0.4, "Abran la carpeta en su editor. El cambio vive en runWork.", { pt: 15, color: INK }),
+      tx(0.5, 5.95, 8.22, 0.4, "Descríbanle el oficio al editor. Él cambia buildRunWork.", { pt: 15, color: INK }),
     ])),
   },
   {
-    notes: "Corré bag dev y leé la URL. A2A escucha en el puerto 9000. La agent card confirma que el proceso está vivo.",
+    notes: "Corré bag dev y leé la URL. A2A escucha en el puerto 9000. La agent card confirma que el proceso está vivo. Windows: al cortar bag dev puede quedar un node.exe con los puertos 9000 y 8088; cierren la terminal o terminen el proceso antes de repetir.",
     els: step(5, "Verlo en su máquina", false, [
       tx(4.65, 0.95, 8.28, 0.7, "Meta: el agente responde delante de ustedes.", { pt: 18, color: INK }),
     ].concat(codeBox(4.65, 1.77, 8.28, 0.96, "bag dev\ncurl http://localhost:9000/.well-known/agent-card.json", 15), [
-      tx(4.65, 2.95, 8.28, 3.4, "Cuando la terminal imprima la dirección, ábranla.\nLa tarjeta del agente confirma que el proceso está vivo.\nSi no levanta, comparen Node, la carpeta y si init terminó.", { pt: 16, color: INK }),
+      tx(4.65, 2.95, 8.28, 3.4, "Cuando la terminal imprima la dirección, ábranla.\nLa tarjeta del agente confirma que el proceso está vivo.\nSi no levanta, comparen Node, la carpeta y si init terminó.\nWindows: si el puerto 9000 sigue ocupado, cierren la terminal.", { pt: 16, color: INK }),
     ])),
   },
   {
-    notes: "Bun 1.3 o más. El reloj de 48 horas arranca en el primer deploy exitoso, una ventana por cuenta de GitHub. Wallet desechable. No corras destroy.",
+    notes: "Bun 1.3 o más. login imprime github.com/login/device y un código; aprobarlo no arranca el reloj. deploy prepare solo revisa: esperá 0 BLOCKED y 2 WARNING de x402. El reloj de 48 horas arranca en bag deploy (--yes si no es interactivo; no existe --ignore-warnings). Una ventana por cuenta de GitHub, hasta unos 10 agentes. Wallet desechable. No corras destroy. verify registra ERC-8004 sin gas, pero en el trial todos salen como “studio-agent”: no es error de ellos, y erc8004 register --name se rechaza en platform. update-metadata pone el nombre real (y --key description) gratis con paymaster; se comprueba con bag erc8004 get-metadata --key name. El aviso x402 UNVERIFIED / 404 es normal sin credenciales B402; la demo va por ERC-8183. Si después de verify bag erc8004 show dice que no hay agente, esperen un minuto y repitan: el índice tarda; el registro ya está en la cadena. La compra agente a agente del cierre todavía no está verificada.",
     els: step(6, "Desplegar el trial", true, [
-      tx(0.5, 0.95, 8.22, 0.7, "Meta: una URL de prueba en testnet. Dura 48 horas.", { pt: 18, color: INK }),
+      tx(0.5, 0.95, 8.22, 0.7, "Meta: una URL en testnet por 48 horas, con su nombre onchain.", { pt: 18, color: INK }),
     ].concat(
-      codeBox(0.5, 1.77, 8.22, 1.92, "bun --version\nbag platform login\nbag platform credit\nbag deploy --provider bnb\nbag deploy verify --provider bnb", 15),
-      [tx(0.5, 3.91, 8.22, 2.8, "Login con GitHub: la terminal da un código y ellos lo completan en el browser.\nBun tiene que estar antes de este paso. La identidad onchain entra en verify.", { pt: 16, color: INK })]
+      codeBox(0.5, 1.77, 8.22, 2.56, "bun --version\nbag platform login\nbag platform credit\nbag deploy prepare --provider bnb\nbag deploy --provider bnb\nbag deploy verify --provider bnb\nbag erc8004 update-metadata --key name --value 'Nombre'", 14),
+      [tx(0.5, 4.55, 8.22, 2.3, "El reloj arranca en bag deploy, no en el login.\nverify registra a todos como “studio-agent”. update-metadata pone su nombre, sin costo.", { pt: 16, color: INK })]
     )),
   },
   {
-    notes: "Usala cuando alguien muestre un error, no como pausa.",
+    notes: "Usala cuando alguien muestre un error, no como pausa. Fuera de la lámina: node -v bajo de 22, se instala Node. Saldo en cero: los fondos quedaron en MetaMask, no en bag wallet show. bag dev se cae con bazaar.info_json: saquen la description de [payments.b402_seller.bazaar]. Puerto 9000 ocupado en Windows: cierren la terminal. El deploy no arranca: falta Bun o el código de GitHub no se completó.",
     els: [
       logo("ink"),
       heading("Si la terminal dice otra cosa.", 0.9),
     ].concat(
       [
-        ["node -v bajo de 22", "Instalan Node y vuelven a abrir la terminal."],
         ["bag no se reconoce", "Cierran la terminal, la abren de nuevo, y repiten bag --version."],
         ["Chain ID distinto de 97", "La red es BSC Testnet. No mainnet, no opBNB."],
-        ["$U no aparece", "Agregan el contrato. El saldo puede haber llegado igual."],
-        ["El agente sigue en cero", "Los fondos están en MetaMask, no en la address de bag wallet show."],
-        ["El deploy no arranca", "Falta Bun, o el código de GitHub no se completó."],
+        ["$U no aparece", "Importan el contrato: símbolo U, 18 decimales."],
+        ["deploy prepare: falta key_hash", "En app/agent corren bag llm activate. Después, bag doctor."],
+        ["erc8004 show: no hay agente", "El índice tarda. Esperen un minuto y repitan."],
+        ["x402 UNVERIFIED / 404", "Normal sin credenciales B402. Hoy se cobra por ERC-8183."],
       ].flatMap((row, i) => {
         const col = i % 2;
         const rr = Math.floor(i / 2);
@@ -439,6 +473,37 @@ const slides = [
         tx(0.82, 6.1, 9.25, 0.4, "Lo de hoy es el piso. La entrega es el 11.", { pt: 16, color: WHITE }),
         r(10.6, 4.1, 2.25, 2.8, SOFT),
         im(10.85, 4.32, 1.75, 1.75, "assets/qr-hack.png"),
+        tx(10.7, 6.18, 2.05, 0.4, "Página", { pt: 14, bold: 1, color: GOLD, center: 1 }),
+      ]
+    ),
+  },
+  {
+    dark: 1,
+    notes: "Fuente: blog oficial de BNB Chain, 1 de octubre. Corre del 1 de octubre al 5 de noviembre de 2026, 12:00 UTC (08:00 Bolivia). Tareas: registrar la wallet; contratar 3 agentes distintos en al menos 2 de los 9 marketplaces; armar y publicar el suyo: registrado en ERC-8004, al menos 3 contrataciones completas desde 3 wallets distintas y 5 acciones onchain en al menos 3 días separados. Premio: merch limitado para las primeras 100 wallets que califiquen (unos 10.000 USD en total). No hay efectivo. Mayores de 18, con restricciones por país, una wallet por persona. Gancho: el agente de hoy ya queda en ERC-8004, puede ser su “build and list”. Contrátense entre ustedes para llegar a 3 contrataciones de 3 wallets.",
+    els: [
+      logo("yellow"),
+      tx(0.55, 0.9, 12, 0.28, "TAMBIÉN, HASTA NOVIEMBRE", { pt: 13, bold: 1, color: GOLD }),
+      tx(0.55, 1.3, 12, 0.55, "Set and Earn: contraten y armen agentes", { pt: 32, bold: 1, color: WHITE }),
+    ].concat(
+      [
+        ["5 nov", "Cierra a las 08:00, hora de Bolivia."],
+        ["100 wallets", "Las primeras que califican se llevan merch."],
+        ["Sin efectivo", "Merch limitado. Una wallet por persona."],
+      ].flatMap((stat, i) => {
+        const x = 0.5 + i * 4.2;
+        return [
+          r(x, 2.05, 4.0, 1.85, SOFT),
+          tx(x + 0.28, 2.22, 3.45, 0.55, stat[0], { pt: 26, bold: 1, color: GOLD }),
+          tx(x + 0.28, 2.85, 3.45, 0.8, stat[1], { pt: 16, color: WHITE }),
+        ];
+      }),
+      [
+        r(0.5, 4.1, 9.9, 2.8, SOFT),
+        tx(0.82, 4.3, 9.25, 1.2, "Contratan 3 agentes en al menos 2 de los 9 marketplaces.\nPublican el suyo: ERC-8004, 3 contrataciones de 3 wallets\ny 5 acciones onchain en 3 días distintos.", { pt: 17, color: WHITE }),
+        tx(0.82, 5.6, 9.25, 0.4, "bnbchain.org/en/hackathons/smart-money-era-set-and-earn", { pt: 16, color: GOLD }),
+        tx(0.82, 6.1, 9.25, 0.4, "El de hoy ya queda en ERC-8004. Contrátense entre ustedes.", { pt: 16, color: WHITE }),
+        r(10.6, 4.1, 2.25, 2.8, SOFT),
+        im(10.85, 4.32, 1.75, 1.75, "assets/qr-setearn.png"),
         tx(10.7, 6.18, 2.05, 0.4, "Página", { pt: 14, bold: 1, color: GOLD, center: 1 }),
       ]
     ),
@@ -492,7 +557,7 @@ const slides = [
     ),
   },
   {
-    notes: "Dejá que escaneen. linktr.ee/bnbchain, WhatsApp en español, linktr.ee/tomoki977.",
+    notes: "Dejá que escaneen. linktr.ee/bnbchain, WhatsApp en español, linktr.ee/tomoki977 y github.com/bnb-builder-bo. Acá están las slides, la secuencia verificada y los recursos.",
     els: [
       logo("ink"),
       heading("Para escribir después.", 0.88),
@@ -501,20 +566,21 @@ const slides = [
         ["assets/qr-bnb.png", "BNB Chain", "linktr.ee/bnbchain"],
         ["assets/qr-es.png", "En español", "WhatsApp"],
         ["assets/qr-julio.png", "Julio", "linktr.ee/tomoki977"],
+        ["assets/qr-github.png", "Recursos", "github.com/bnb-builder-bo"],
       ].flatMap((item, i) => {
-        const x = 0.5 + i * 4.2;
+        const x = 0.5 + i * 3.12;
         return [
-          r(x, 1.7, 4.0, 5.2, INK),
-          im(x + 0.62, 2.15, 2.75, 2.75, item[0]),
-          tx(x + 0.28, 5.15, 3.44, 0.5, item[1], { pt: 22, bold: 1, color: GOLD, center: 1 }),
-          tx(x + 0.28, 5.7, 3.44, 0.4, item[2], { pt: 15, color: WHITE, center: 1 }),
+          r(x, 1.7, 2.96, 5.2, INK),
+          im(x + 0.28, 2.2, 2.4, 2.4, item[0]),
+          tx(x + 0.14, 5.0, 2.68, 0.5, item[1], { pt: 22, bold: 1, color: GOLD, center: 1 }),
+          tx(x + 0.14, 5.55, 2.68, 0.4, item[2], { pt: 13, color: WHITE, center: 1 }),
         ];
       })
     ),
   },
   {
     dark: 1,
-    notes: "Dejá esta lámina y respondé lo que quede. Si preguntan por la hackathon, volvé una lámina.",
+    notes: "Dejá esta lámina y respondé lo que quede. Si preguntan por las hackathons, volvé a esas láminas: 11 de octubre y 5 de noviembre.",
     els: [
       logo("yellow"),
       tx(0.6, 2.15, 12, 0.9, "Gracias.", { pt: 54, bold: 1, color: WHITE }),
