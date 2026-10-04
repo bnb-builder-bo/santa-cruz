@@ -557,7 +557,7 @@ const slides = [
     ),
   },
   {
-    notes: "Dejá que escaneen. linktr.ee/bnbchain, WhatsApp en español, linktr.ee/tomoki977 y github.com/bnb-builder-bo. Acá están las slides, la secuencia verificada y los recursos.",
+    notes: "Dejá que escaneen. linktr.ee/bnbchain, WhatsApp en español, linktr.ee/tomoki977 y github.com/bnb-builder-bo. Acá están las slides, la secuencia verificada y los recursos. Pedí que suban su agente o su prueba como issue en github.com/bnb-builder-bo/santa-cruz, con la plantilla “Mi agente”.",
     els: [
       logo("ink"),
       heading("Para escribir después.", 0.88),
@@ -574,7 +574,11 @@ const slides = [
           im(x + 0.28, 2.2, 2.4, 2.4, item[0]),
           tx(x + 0.14, 5.0, 2.68, 0.5, item[1], { pt: 22, bold: 1, color: GOLD, center: 1 }),
           tx(x + 0.14, 5.55, 2.68, 0.4, item[2], { pt: 13, color: WHITE, center: 1 }),
-        ];
+        ].concat(
+          i === 3
+            ? [tx(x + 0.14, 6.05, 2.68, 0.6, "Suban su agente o su prueba\ncomo issue en santa-cruz.", { pt: 12, color: GOLD, center: 1 })]
+            : []
+        );
       })
     ),
   },
