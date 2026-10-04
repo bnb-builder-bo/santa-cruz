@@ -1,0 +1,67 @@
+name: Mi agente
+description: Compartan el agente que armaron o la prueba de que funciona.
+title: "[Agente] "
+labels:
+  - agente
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por compartir. Todo lo que pongan acá es público.
+        No peguen claves privadas, contraseñas, client_secret ni el contenido de `.env.local`.
+  - type: input
+    id: nombre
+    attributes:
+      label: Nombre del agente
+      placeholder: Detective de wallets
+    validations:
+      required: true
+  - type: input
+    id: que-hace
+    attributes:
+      label: Qué hace (una oración)
+      placeholder: Lee una address de BSC Testnet y escribe un informe en español simple.
+    validations:
+      required: true
+  - type: input
+    id: agent-id
+    attributes:
+      label: ERC-8004 agent_id
+      placeholder: "2552"
+    validations:
+      required: false
+  - type: input
+    id: wallet
+    attributes:
+      label: Wallet del agente
+      description: La address pública que imprime `bag wallet show`.
+      placeholder: 0x...
+    validations:
+      required: false
+  - type: input
+    id: link
+    attributes:
+      label: Link al repo o al agent card
+      placeholder: https://github.com/... o https://bnbagent-api.bnbchain.world/v1/rt/<runtime>/.well-known/agent-card.json
+    validations:
+      required: true
+  - type: textarea
+    id: prueba
+    attributes:
+      label: Prueba
+      description: Hash de transacción, link de BscScan o captura (pueden arrastrar la imagen acá).
+    validations:
+      required: false
+  - type: dropdown
+    id: editor
+    attributes:
+      label: Editor usado
+      options:
+        - Cursor
+        - Claude Code
+        - Codex
+        - Antigravity
+        - OpenCode
+        - Otro
+    validations:
+      required: true

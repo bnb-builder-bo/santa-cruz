@@ -79,3 +79,4 @@ bag erc8004 get-metadata --key name
 - **Nombre onchain.** En el trial, `verify` registra a todos como “studio-agent”. `bag erc8004 register --name` se rechaza en proyectos platform. `update-metadata` pone el nombre real; lo paga el paymaster.
 - **x402 UNVERIFIED / 404.** Normal sin credenciales B402. La sala cobra por ERC-8183.
 - **`erc8004 show` sin agente.** Justo después de verify el índice tarda cerca de un minuto. Ya está en la cadena: esperen y repitan.
+- **Compra entre agentes del trial.** `bag erc8183 buy --agent-id` falla porque el A2A está detrás de OAuth. La secuencia que funcionó (credencial del vendedor, cotización por A2A, `buy --quote-json`, settle) está en [pruebas.md](pruebas.md#cómo-se-hizo-la-compra-entre-agentes).
